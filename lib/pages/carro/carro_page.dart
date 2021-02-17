@@ -1,18 +1,33 @@
+import 'package:carros/pages/carro/loripsum_bloc.dart';
 import 'package:carros/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 import 'carro.dart';
 
-class CarroPage extends StatelessWidget {
+class CarroPage extends StatefulWidget {
   Carro carro;
 
+
   CarroPage(this.carro);
+
+  @override
+  _CarroPageState createState() => _CarroPageState();
+}
+
+class _CarroPageState extends State<CarroPage> {
+  final _bloc = LoripsumBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc.fetch();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(carro.nome),
+        title: Text(widget.carro.nome),
         actions: [
           IconButton(
             icon: Icon(Icons.place),
@@ -52,7 +67,7 @@ class CarroPage extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: ListView(
         children: [
-          Image.network(carro.urlFoto),
+          Image.network(widget.carro.urlFoto),
           _bloco1(),
           Divider(
             color: Colors.grey,
@@ -71,12 +86,12 @@ class CarroPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             text(
-              carro.nome,
+              widget.carro.nome,
               fontSize: 24,
               bold: true,
             ),
             text(
-              carro.tipo,
+              widget.carro.tipo,
               fontSize: 16,
             ),
           ],
@@ -131,12 +146,21 @@ class CarroPage extends StatelessWidget {
           SizedBox(
             height: 12,
           ),
-          text(
-              "Fogo é a rápida oxidação de um material combustível liberando calor, luz e produtos de reação, tais como o dióxido de carbono e a água.[1] O fogo é uma mistura de gases a altas temperaturas, formada em reação exotérmica de oxidação, que emite radiação eletromagnética nas faixas do infravermelho e visível. Desse modo, o fogo pode ser entendido como uma entidade gasosa emissora de radiação e decorrente da combustão. Se bastante quente, os gases podem se tornar ionizados para produzir plasma.[2] Dependendo das substâncias presentes e de quaisquer impurezas, a cor da chama e a intensidade do fogo podem variar. O fogo em sua forma mais comum pode resultar em incêndio, que tem o potencial de causar dano físico através da queima.",
-              fontSize: 16,
-              bold: false),
+          StreamBuilder<String>(
+              stream: _bloc.stream,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return text(snapshot.data, fontSize: 16, bold: false);
+              }),
         ],
       ),
     );
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
   }
 }

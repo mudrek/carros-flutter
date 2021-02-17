@@ -6,10 +6,11 @@ class CarroBloc extends SimpleBloc<List<Carro>> {
 
   List<Carro> carros;
 
-  void fetch(String tipo) async {
+  Future<List<Carro>> fetch(String tipo) async {
     try {
       List<Carro> carros = await CarroApi.getCarros(tipo);
       add(carros);
+      return carros;
     } catch (error) {
       addError(error);
     }
