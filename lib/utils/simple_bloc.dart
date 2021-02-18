@@ -14,7 +14,7 @@ class SimpleBloc<T> {
     _streamController.close();
   }
 
-  void addError(Error error) {
+  void addError(error) {
     _streamController.addError(error);
   }
 }

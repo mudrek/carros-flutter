@@ -1,4 +1,5 @@
 import 'package:carros/pages/carro/loripsum_api.dart';
+import 'package:carros/utils/network.dart';
 import 'package:carros/utils/simple_bloc.dart';
 
 class LoripsumBloc extends SimpleBloc<String> {
@@ -7,8 +8,13 @@ class LoripsumBloc extends SimpleBloc<String> {
 
   void fetch() async {
     try {
-      String text = await LoripsumApi.getLoripsum();
-      add(text);
+      bool networkOn = await isNetworkOn();
+      if(!networkOn) {
+        throw new Exception("Sem conexão com a internet");
+      } else {
+        String text = await LoripsumApi.getLoripsum();
+        add(text);
+      }
     } catch (error) {
       addError(error);
     }

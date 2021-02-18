@@ -29,12 +29,6 @@ class CarroApi {
 
     List list = json.decode(response.body);
 
-    final carros = list.map((e) => Carro.fromMap(e)).toList();
-
-    var dao = CarroDAO();
-
-    carros.forEach(dao.save);
-
-    return carros;
+    return list.map((e) => Carro.fromMap(e)).toList();
   }
 }

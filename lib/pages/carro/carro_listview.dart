@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carro_page.dart';
 import 'package:carros/utils/nav.dart';
@@ -24,8 +25,8 @@ class CarroListView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child: Image.network(
-                      c.urlFoto ??
+                    child: CachedNetworkImage(
+                      imageUrl: c.urlFoto ??
                           "https://cdn.iconscout.com/icon/premium/png-512-thumb/missing-file-1178170.png",
                       width: 250,
                     ),

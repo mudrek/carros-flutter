@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros/pages/carro/loripsum_bloc.dart';
 import 'package:carros/widgets/text.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,6 @@ import 'carro.dart';
 
 class CarroPage extends StatefulWidget {
   Carro carro;
-
 
   CarroPage(this.carro);
 
@@ -67,7 +67,9 @@ class _CarroPageState extends State<CarroPage> {
       padding: EdgeInsets.all(16),
       child: ListView(
         children: [
-          Image.network(widget.carro.urlFoto),
+          CachedNetworkImage(
+            imageUrl: widget.carro.urlFoto,
+          ),
           _bloco1(),
           Divider(
             color: Colors.grey,
@@ -149,6 +151,12 @@ class _CarroPageState extends State<CarroPage> {
           StreamBuilder<String>(
               stream: _bloc.stream,
               builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return text(
+                    "Não foi possível buscar o texto.",
+                    fontSize: 16,
+                  );
+                }
                 if (!snapshot.hasData) {
                   return Center(child: CircularProgressIndicator());
                 }
@@ -158,6 +166,7 @@ class _CarroPageState extends State<CarroPage> {
       ),
     );
   }
+
   @override
   void dispose() {
     super.dispose();

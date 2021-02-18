@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros/pages/login/login_page.dart';
 import 'package:carros/pages/login/usuario.dart';
 import 'package:carros/utils/nav.dart';
@@ -9,7 +10,7 @@ class DrawerList extends StatelessWidget {
       accountName: Text(usuario.nome),
       accountEmail: Text(usuario.email),
       currentAccountPicture: CircleAvatar(
-        backgroundImage: NetworkImage(usuario.urlFoto),
+        child: CachedNetworkImage(imageUrl: usuario.urlFoto),
       ),
     );
   }
