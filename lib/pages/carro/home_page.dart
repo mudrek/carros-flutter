@@ -1,7 +1,11 @@
 import 'package:carros/drawer_list.dart';
 import 'package:carros/pages/carro/carro_api.dart';
+import 'package:carros/pages/carro/carro_form_page.dart';
 import 'package:carros/pages/carro/carro_list_page.dart';
 import 'package:carros/pages/carro/carro_listview.dart';
+import 'package:carros/pages/favorito/favorito_list_page.dart';
+import 'package:carros/utils/alert.dart';
+import 'package:carros/utils/nav.dart';
 import 'package:carros/utils/prefs.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +27,7 @@ class _HomePageState extends State<HomePage>
   _initTabs() async {
     int tabIdx = await Prefs.getInt("tabIdx");
 
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
 
     setState(() {
       _tabController.index = tabIdx;
@@ -46,12 +50,19 @@ class _HomePageState extends State<HomePage>
                 tabs: [
                   Tab(
                     text: "Clássicos",
+                    icon: Icon(Icons.directions_car_outlined),
                   ),
                   Tab(
                     text: "Esportivos",
+                    icon: Icon(Icons.directions_car_outlined),
                   ),
                   Tab(
                     text: "Luxo",
+                    icon: Icon(Icons.directions_car_outlined),
+                  ),
+                  Tab(
+                    text: "Favoritos",
+                    icon: Icon(Icons.favorite),
                   ),
                 ],
               ),
@@ -65,8 +76,18 @@ class _HomePageState extends State<HomePage>
                 CarroListPage(TipoCarro.classicos),
                 CarroListPage(TipoCarro.esportivos),
                 CarroListPage(TipoCarro.luxo),
+                FavoritoListPage(),
               ],
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _onClickAdicionarCarro,
+        child: Icon(Icons.add),
+      ),
     );
+  }
+
+  void _onClickAdicionarCarro() {
+    push(context, CarroFormPage());
+    //alert(context, "Adicionando carro");
   }
 }

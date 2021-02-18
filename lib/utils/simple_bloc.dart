@@ -1,7 +1,6 @@
 import 'dart:async';
 
 class SimpleBloc<T> {
-
   final _streamController = StreamController<T>();
 
   get stream => _streamController.stream;
@@ -15,6 +14,8 @@ class SimpleBloc<T> {
   }
 
   void addError(error) {
-    _streamController.addError(error);
+    if(_streamController != null) {
+      _streamController.addError(error);
+    }
   }
 }

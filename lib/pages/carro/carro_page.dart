@@ -1,5 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carros/pages/carro/carro_form_page.dart';
 import 'package:carros/pages/carro/loripsum_bloc.dart';
+import 'package:carros/pages/favorito/favorito.dart';
+import 'package:carros/pages/favorito/favorito_bloc.dart';
+import 'package:carros/pages/favorito/favorito_service.dart';
+import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/text.dart';
 import 'package:flutter/material.dart';
 
@@ -17,9 +22,18 @@ class CarroPage extends StatefulWidget {
 class _CarroPageState extends State<CarroPage> {
   final _bloc = LoripsumBloc();
 
+  Color color = Colors.black;
+
   @override
   void initState() {
     super.initState();
+
+    FavoritoService.isFavorito(widget.carro).then((favoritado) {
+      setState(() {
+        color = favoritado ? Colors.red : Colors.black;
+      });
+    });
+
     _bloc.fetch();
   }
 
@@ -68,7 +82,7 @@ class _CarroPageState extends State<CarroPage> {
       child: ListView(
         children: [
           CachedNetworkImage(
-            imageUrl: widget.carro.urlFoto,
+            imageUrl: widget.carro.urlFoto ?? "https://cdn.iconscout.com/icon/premium/png-512-thumb/missing-file-1178170.png",
           ),
           _bloco1(),
           Divider(
@@ -87,10 +101,13 @@ class _CarroPageState extends State<CarroPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            text(
-              widget.carro.nome,
-              fontSize: 24,
-              bold: true,
+            Container(
+              width: 200,
+              child: text(
+                widget.carro.nome,
+                fontSize: 24,
+                bold: true,
+              ),
             ),
             text(
               widget.carro.tipo,
@@ -103,6 +120,7 @@ class _CarroPageState extends State<CarroPage> {
             IconButton(
               iconSize: 36,
               icon: Icon(Icons.favorite),
+              color: color,
               onPressed: _onClickFavorito,
             ),
             IconButton(
@@ -121,7 +139,11 @@ class _CarroPageState extends State<CarroPage> {
   _onClickPopupMenu(String value) {
     switch (value) {
       case "Editar":
-        print("Editar!!!!");
+        push(
+            context,
+            CarroFormPage(
+              carro: widget.carro,
+            ));
         break;
       case "Deletar":
         print("Deletar!!!!");
@@ -132,7 +154,12 @@ class _CarroPageState extends State<CarroPage> {
     }
   }
 
-  void _onClickFavorito() {}
+  void _onClickFavorito() async {
+    bool favoritado = await FavoritoService.favoritar(widget.carro);
+    setState(() {
+      color = favoritado ? Colors.red : Colors.black;
+    });
+  }
 
   void _onClickShare() {}
 
