@@ -29,7 +29,7 @@ class CarroApi {
 
     List list = json.decode(response.body);
 
-    final carros = list.map((e) => Carro.fromJson(e)).toList();
+    final carros = list.map((e) => Carro.fromMap(e)).toList();
 
     var dao = CarroDAO();
 
