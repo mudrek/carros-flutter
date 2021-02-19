@@ -9,8 +9,16 @@ class DrawerList extends StatelessWidget {
     return UserAccountsDrawerHeader(
       accountName: Text(usuario.nome),
       accountEmail: Text(usuario.email),
-      currentAccountPicture: CircleAvatar(
-        child: CachedNetworkImage(imageUrl: usuario.urlFoto),
+      currentAccountPicture: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.black45,
+        ),
+        child: ClipOval(
+          child: CachedNetworkImage(
+            imageUrl: usuario.urlFoto,
+          ),
+        ),
       ),
     );
   }

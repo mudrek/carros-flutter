@@ -23,7 +23,7 @@ class CarroBloc extends SimpleBloc<List<Carro>> {
 
       return carros;
     } catch (error) {
-      stream != null ? addError(error) : null;
+      addError(error);
     }
   }
 }

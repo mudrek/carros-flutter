@@ -1,5 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carros/pages/api_response.dart';
 import 'package:carros/pages/carro/carro.dart';
+import 'package:carros/pages/carro/carro_api.dart';
+import 'package:carros/utils/alert.dart';
+import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/app_button.dart';
 import 'package:carros/widgets/app_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +47,7 @@ class _CarroFormPageState extends State<CarroFormPage> {
     // Copia os dados do carro para o form
     if (carro != null) {
       tNome.text = carro.nome;
-      tDesc.text = carro.desc;
+      tDesc.text = carro.descricao;
       _radioIndex = getTipoInt(carro);
     }
   }
@@ -101,7 +105,9 @@ class _CarroFormPageState extends State<CarroFormPage> {
             keyboardType: TextInputType.text,
             validator: _validateNome,
           ),
-          Divider(height: 16,),
+          Divider(
+            height: 16,
+          ),
           AppButton(
             "Salvar",
             onPressed: _onClickSalvar,
@@ -115,7 +121,8 @@ class _CarroFormPageState extends State<CarroFormPage> {
   _headerFoto() {
     return carro != null
         ? CachedNetworkImage(
-            imageUrl: carro.urlFoto ?? "https://cdn.iconscout.com/icon/premium/png-512-thumb/missing-file-1178170.png",
+            imageUrl: carro.urlFoto ??
+                "https://cdn.iconscout.com/icon/premium/png-512-thumb/missing-file-1178170.png",
           )
         : Image.asset(
             "assets/images/camera.png",
@@ -194,7 +201,7 @@ class _CarroFormPageState extends State<CarroFormPage> {
     // Cria o carro
     var c = carro ?? Carro();
     c.nome = tNome.text;
-    c.desc = tDesc.text;
+    c.descricao = tDesc.text;
     c.tipo = _getTipo();
 
     print("Carro: $c");
@@ -205,12 +212,23 @@ class _CarroFormPageState extends State<CarroFormPage> {
 
     print("Salvar o carro $c");
 
-    await Future.delayed(Duration(seconds: 3));
+    ApiResponse<Carro> response = await CarroApi.saveOrUpdate(c);
+
+    if (response.ok) {
+      alert(context, "Carro salvo com sucesso!", callback: _onClickOkAlert);
+    } else {
+      alert(context, response.msg, callback: _onClickOkAlert);
+    }
+    // await Future.delayed(Duration(seconds: 3));
 
     setState(() {
       _showProgress = false;
     });
 
     print("Fim.");
+  }
+
+  _onClickOkAlert() {
+    pop(context);
   }
 }

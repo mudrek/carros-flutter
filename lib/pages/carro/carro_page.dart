@@ -1,13 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carros/pages/carro/carro_api.dart';
 import 'package:carros/pages/carro/carro_form_page.dart';
 import 'package:carros/pages/carro/loripsum_bloc.dart';
 import 'package:carros/pages/favorito/favorito.dart';
 import 'package:carros/pages/favorito/favorito_bloc.dart';
 import 'package:carros/pages/favorito/favorito_service.dart';
+import 'package:carros/utils/alert.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/text.dart';
 import 'package:flutter/material.dart';
 
+import '../api_response.dart';
 import 'carro.dart';
 
 class CarroPage extends StatefulWidget {
@@ -146,7 +149,7 @@ class _CarroPageState extends State<CarroPage> {
             ));
         break;
       case "Deletar":
-        print("Deletar!!!!");
+        _onClickDeletar();
         break;
       case "Share":
         print("Share!!!!");
@@ -198,5 +201,23 @@ class _CarroPageState extends State<CarroPage> {
   void dispose() {
     super.dispose();
     _bloc.dispose();
+  }
+
+  void _onClickDeletar() async {
+
+    print("Deletar o carro ${widget.carro}");
+
+    ApiResponse<bool> response = await CarroApi.delete(widget.carro);
+
+    if (response.ok) {
+      alert(context, "Carro deletado com sucesso!", callback: _onClickOkAlert);
+    } else {
+      alert(context, response.msg, callback: _onClickOkAlert);
+    }
+    // await Future.delayed(Duration(seconds: 3));
+  }
+
+  _onClickOkAlert() {
+    pop(context);
   }
 }
