@@ -2,8 +2,8 @@
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carro_dao.dart';
 import 'package:carros/pages/favorito/favorito.dart';
-import 'package:carros/pages/favorito/favorito_bloc.dart';
 import 'package:carros/pages/favorito/favorito_dao.dart';
+import 'package:carros/pages/favorito/favorito_model.dart';
 import 'package:provider/provider.dart';
 
 class FavoritoService {
@@ -17,12 +17,12 @@ class FavoritoService {
     if (exists) {
       print("DELETE");
       dao.delete(favorito.id);
-      Provider.of<FavoritoBloc>(context).fetch();
+      Provider.of<FavoritoModel>(context, listen: false).getCarros();
       return false;
     } else {
       print("INSERT");
       dao.save(favorito);
-      Provider.of<FavoritoBloc>(context).fetch();
+      Provider.of<FavoritoModel>(context, listen: false).getCarros();
       return true;
     }
   }

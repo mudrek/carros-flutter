@@ -1,6 +1,6 @@
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carro_listview.dart';
-import 'package:carros/pages/favorito/favorito_bloc.dart';
+import 'package:carros/pages/favorito/favorito_model.dart';
 import 'package:carros/widgets/text_error.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,42 +18,36 @@ class _FavoritoListPageState extends State<FavoritoListPage>
   @override
   void initState() {
     super.initState();
-    FavoritoBloc favoritosBloc = Provider.of<FavoritoBloc>(context, listen: false);
-    favoritosBloc.fetch();
+    FavoritoModel favoritosBloc =
+        Provider.of<FavoritoModel>(context, listen: false);
+    favoritosBloc.getCarros();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    return StreamBuilder(
-      stream: Provider.of<FavoritoBloc>(context).stream,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          print("Erro ao buscar carros, >> ${snapshot.error}");
-          return RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: TextError("Não foi possível buscar os carros."));
-        }
+    FavoritoModel model = Provider.of<FavoritoModel>(context);
 
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+    List<Carro> carros = model.carros;
 
-        List<Carro> carros = snapshot.data;
+    if (carros.isEmpty) {
+      return Center(
+        child: Text(
+          "Nenhum carro nos favoritos",
+          style: TextStyle(fontSize: 25),
+        ),
+      );
+    }
 
-        return RefreshIndicator(
-          onRefresh: _onRefresh,
-          child: CarroListView(carros),
-        );
-      },
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      child: CarroListView(carros),
     );
   }
 
   Future<void> _onRefresh() {
-    return Provider.of<FavoritoBloc>(context).fetch();
+    return Provider.of<FavoritoModel>(context, listen: false).getCarros();
   }
 
   @override

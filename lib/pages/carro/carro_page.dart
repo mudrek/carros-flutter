@@ -2,8 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros/pages/carro/carro_api.dart';
 import 'package:carros/pages/carro/carro_form_page.dart';
 import 'package:carros/pages/carro/loripsum_bloc.dart';
-import 'package:carros/pages/favorito/favorito.dart';
-import 'package:carros/pages/favorito/favorito_bloc.dart';
 import 'package:carros/pages/favorito/favorito_service.dart';
 import 'package:carros/utils/alert.dart';
 import 'package:carros/utils/nav.dart';
