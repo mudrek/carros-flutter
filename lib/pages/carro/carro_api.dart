@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:carros/pages/api_response.dart';
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/upload_api.dart';
-import 'package:carros/pages/login/usuario.dart';
 import 'package:carros/utils/http_helper.dart' as http;
 
 class TipoCarro {
@@ -29,10 +28,9 @@ class CarroApi {
 
   static Future<ApiResponse<Carro>> saveOrUpdate(Carro carro, File file) async {
     try {
-
-      if(file != null) {
+      if (file != null) {
         ApiResponse<String> response = await UploadApi.upload(file);
-        if(response.ok) {
+        if (response.ok) {
           String urlFoto = response.result;
           carro.urlFoto = urlFoto;
         }
@@ -72,7 +70,8 @@ class CarroApi {
 
   static Future<ApiResponse<bool>> delete(Carro carro) async {
     try {
-      var url = 'http://carros-springboot.herokuapp.com/api/v2/carros/${carro.id}';
+      var url =
+          'http://carros-springboot.herokuapp.com/api/v2/carros/${carro.id}';
 
       print("DELETE > $url");
 

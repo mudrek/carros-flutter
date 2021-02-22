@@ -6,6 +6,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper.getInstance();
+
   DatabaseHelper.getInstance();
 
   factory DatabaseHelper() => _instance;
@@ -26,7 +27,8 @@ class DatabaseHelper {
     String path = join(databasesPath, 'carros.db');
     print("db $path");
 
-    var db = await openDatabase(path, version: 2, onCreate: _onCreate, onUpgrade: _onUpgrade);
+    var db = await openDatabase(path,
+        version: 2, onCreate: _onCreate, onUpgrade: _onUpgrade);
     return db;
   }
 
@@ -37,17 +39,18 @@ class DatabaseHelper {
     print("Create databases");
 
     sqls.forEach((sql) async {
-      if(sql.trim().isNotEmpty) {
+      if (sql.trim().isNotEmpty) {
         print("SQL > $sql");
         await db.execute(sql);
       }
     });
   }
 
-  Future<FutureOr<void>> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+  Future<FutureOr<void>> _onUpgrade(
+      Database db, int oldVersion, int newVersion) async {
     print("_onUpgrade: oldVersion: $oldVersion > newVersion: $newVersion");
 
-    if(oldVersion == 1 && newVersion == 2) {
+    if (oldVersion == 1 && newVersion == 2) {
       await db.execute("alter table carro add column NOVA TEXT");
     }
   }

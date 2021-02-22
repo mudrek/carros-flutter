@@ -1,13 +1,11 @@
 import 'dart:async';
 
-import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/utils/sql/db_helper.dart';
 import 'package:carros/utils/sql/entity.dart';
 import 'package:sqflite/sqflite.dart';
 
 // Data Access Object
 abstract class BaseDAO<T extends Entity> {
-
   Future<Database> get db => DatabaseHelper.getInstance().db;
 
   String get entityName;
@@ -18,7 +16,7 @@ abstract class BaseDAO<T extends Entity> {
     var dbClient = await db;
     var id = await dbClient.insert(entityName, entity.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
-    print('id: $id');
+    // print('id: $id');
     return id;
   }
 
@@ -35,8 +33,7 @@ abstract class BaseDAO<T extends Entity> {
   }
 
   Future<T> findById(int id) async {
-    final list =
-        await query('select * from $entityName where id = ?', [id]);
+    final list = await query('select * from $entityName where id = ?', [id]);
 
     return list.length > 0 ? list.first : null;
   }
@@ -55,7 +52,8 @@ abstract class BaseDAO<T extends Entity> {
 
   Future<int> delete(int id) async {
     var dbClient = await db;
-    return await dbClient.rawDelete('delete from $entityName where id = ?', [id]);
+    return await dbClient
+        .rawDelete('delete from $entityName where id = ?', [id]);
   }
 
   Future<int> deleteAll() async {

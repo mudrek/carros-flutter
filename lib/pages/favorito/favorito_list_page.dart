@@ -1,7 +1,6 @@
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carro_listview.dart';
 import 'package:carros/pages/favorito/favorito_model.dart';
-import 'package:carros/widgets/text_error.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

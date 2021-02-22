@@ -1,8 +1,8 @@
 import 'package:carros/pages/carro/home_page.dart';
-import 'package:carros/utils/sql/db_helper.dart';
 import 'package:carros/pages/login/login_page.dart';
 import 'package:carros/pages/login/usuario.dart';
 import 'package:carros/utils/nav.dart';
+import 'package:carros/utils/sql/db_helper.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
@@ -23,7 +23,7 @@ class _SplashPageState extends State<SplashPage> {
     Future.wait([futureA, futureB, futureC]).then((values) {
       print(values);
       Usuario user = values[2];
-      if(user != null) {
+      if (user != null) {
         push(context, HomePage(), replace: true);
       } else {
         push(context, LoginPage(), replace: true);

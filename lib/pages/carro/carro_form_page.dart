@@ -5,6 +5,7 @@ import 'package:carros/pages/api_response.dart';
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carro_api.dart';
 import 'package:carros/utils/alert.dart';
+import 'package:carros/utils/event_bus.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/app_button.dart';
 import 'package:carros/widgets/app_text.dart';
@@ -230,6 +231,7 @@ class _CarroFormPageState extends State<CarroFormPage> {
 
     if (response.ok) {
       alert(context, "Carro salvo com sucesso!", callback: _onClickOkAlert);
+      EventBus.get(context).sendEvent(CarroEvent("carro_salvo", c.tipo));
     } else {
       alert(context, response.msg, callback: _onClickOkAlert);
     }

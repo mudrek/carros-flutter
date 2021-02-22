@@ -2,11 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros/pages/carro/carro_api.dart';
 import 'package:carros/pages/carro/carro_form_page.dart';
 import 'package:carros/pages/carro/loripsum_bloc.dart';
+import 'package:carros/pages/carro/video_page.dart';
 import 'package:carros/pages/favorito/favorito_service.dart';
 import 'package:carros/utils/alert.dart';
+import 'package:carros/utils/event_bus.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/text.dart';
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../api_response.dart';
 import 'carro.dart';
@@ -50,7 +54,7 @@ class _CarroPageState extends State<CarroPage> {
           ),
           IconButton(
             icon: Icon(Icons.videocam),
-            onPressed: _onClickMapa,
+            onPressed: _onClickVideo,
           ),
           PopupMenuButton(
             onSelected: (String value) => _onClickPopupMenu(value),
@@ -83,7 +87,8 @@ class _CarroPageState extends State<CarroPage> {
       child: ListView(
         children: [
           CachedNetworkImage(
-            imageUrl: widget.carro.urlFoto ?? "https://cdn.iconscout.com/icon/premium/png-512-thumb/missing-file-1178170.png",
+            imageUrl: widget.carro.urlFoto ??
+                "https://cdn.iconscout.com/icon/premium/png-512-thumb/missing-file-1178170.png",
           ),
           _bloco1(),
           Divider(
@@ -150,7 +155,7 @@ class _CarroPageState extends State<CarroPage> {
         _onClickDeletar();
         break;
       case "Share":
-        print("Share!!!!");
+        _onClickShare();
         break;
     }
   }
@@ -162,7 +167,9 @@ class _CarroPageState extends State<CarroPage> {
     });
   }
 
-  void _onClickShare() {}
+  void _onClickShare() {
+    Share.share(widget.carro.urlFoto);
+  }
 
   _bloco2() {
     return Container(
@@ -202,13 +209,14 @@ class _CarroPageState extends State<CarroPage> {
   }
 
   void _onClickDeletar() async {
-
     print("Deletar o carro ${widget.carro}");
 
     ApiResponse<bool> response = await CarroApi.delete(widget.carro);
 
     if (response.ok) {
       alert(context, "Carro deletado com sucesso!", callback: _onClickOkAlert);
+      EventBus.get(context)
+          .sendEvent(CarroEvent("carro_deletado", widget.carro.tipo));
     } else {
       alert(context, response.msg, callback: _onClickOkAlert);
     }
@@ -217,5 +225,14 @@ class _CarroPageState extends State<CarroPage> {
 
   _onClickOkAlert() {
     pop(context);
+  }
+
+  void _onClickVideo() {
+    if (widget.carro.urlVideo != null && widget.carro.urlVideo.isNotEmpty) {
+      push(context, VideoPage(widget.carro));
+      // launch(widget.carro.urlVideo);
+    } else {
+      alert(context, "Este carro não possui um vídeo");
+    }
   }
 }
