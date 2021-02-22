@@ -1,4 +1,4 @@
-
+import 'package:auth_buttons/auth_buttons.dart';
 import 'package:carros/pages/api_response.dart';
 import 'package:carros/pages/carro/home_page.dart';
 import 'package:carros/pages/login/login_bloc.dart';
@@ -69,15 +69,24 @@ class _LoginPageState extends State<LoginPage> {
               height: 20,
             ),
             StreamBuilder<bool>(
-                stream: _bloc.stream,
-                initialData: false,
-                builder: (context, snapshot) {
-                  return AppButton(
-                    "Login",
-                    onPressed: _onClickLogin,
-                    showProgress: snapshot.data,
-                  );
-                }),
+              stream: _bloc.stream,
+              initialData: false,
+              builder: (context, snapshot) {
+                return AppButton(
+                  "Login",
+                  onPressed: _onClickLogin,
+                  showProgress: snapshot.data,
+                );
+              },
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                top: 20,
+              ),
+              child: GoogleAuthButton(
+                onPressed: _onClickAuthGoogle,
+              ),
+            ),
           ],
         ),
       ),
@@ -128,5 +137,9 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     super.dispose();
     _bloc.dispose();
+  }
+
+  void _onClickAuthGoogle() {
+    print("Click auth google");
   }
 }

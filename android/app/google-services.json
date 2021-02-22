@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "39646240170",
+    "project_id": "projetoteste-240718",
+    "storage_bucket": "projetoteste-240718.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39646240170:android:91bd6111838b8f5048dfd3",
+        "android_client_info": {
+          "package_name": "com.example.carros"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39646240170-e770gk02cr4s780mktbu0eo0r23t419n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.carros",
+            "certificate_hash": "045babc86459808db58596edfdad4858372d8d6a"
+          }
+        },
+        {
+          "client_id": "39646240170-6r1kr8uimpdpf0t23sqcvlrs9600m91f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0m0vwTZsHSK2-AdF5mpHBHBiiNVnvRtQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39646240170-6r1kr8uimpdpf0t23sqcvlrs9600m91f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,6 +4,7 @@ import 'package:carros/pages/carro/carro_form_page.dart';
 import 'package:carros/pages/carro/loripsum_bloc.dart';
 import 'package:carros/pages/carro/video_page.dart';
 import 'package:carros/pages/favorito/favorito_service.dart';
+import 'package:carros/pages/mapa_page.dart';
 import 'package:carros/utils/alert.dart';
 import 'package:carros/utils/event_bus.dart';
 import 'package:carros/utils/nav.dart';
@@ -140,7 +141,14 @@ class _CarroPageState extends State<CarroPage> {
     );
   }
 
-  void _onClickMapa() {}
+  void _onClickMapa() {
+    if (widget.carro.latitude != null && widget.carro.longitude != null) {
+      push(context, MapaPage(widget.carro));
+      // launch(widget.carro.urlVideo);
+    } else {
+      alert(context, "Este carro não possui um vídeo");
+    }
+  }
 
   _onClickPopupMenu(String value) {
     switch (value) {
