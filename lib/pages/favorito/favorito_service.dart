@@ -1,10 +1,13 @@
+
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carro_dao.dart';
 import 'package:carros/pages/favorito/favorito.dart';
+import 'package:carros/pages/favorito/favorito_bloc.dart';
 import 'package:carros/pages/favorito/favorito_dao.dart';
+import 'package:provider/provider.dart';
 
 class FavoritoService {
-  static Future<bool> favoritar(Carro c) async {
+  static Future<bool> favoritar(context, Carro c) async {
     Favorito favorito = Favorito.fromCarro(c);
 
     final dao = FavoritoDAO();
@@ -14,10 +17,12 @@ class FavoritoService {
     if (exists) {
       print("DELETE");
       dao.delete(favorito.id);
+      Provider.of<FavoritoBloc>(context).fetch();
       return false;
     } else {
       print("INSERT");
       dao.save(favorito);
+      Provider.of<FavoritoBloc>(context).fetch();
       return true;
     }
   }
