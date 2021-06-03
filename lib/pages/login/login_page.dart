@@ -1,6 +1,7 @@
 import 'package:auth_buttons/auth_buttons.dart';
 import 'package:carros/pages/api_response.dart';
 import 'package:carros/pages/carro/home_page.dart';
+import 'package:carros/pages/login/firebase/firebase_service.dart';
 import 'package:carros/pages/login/login_bloc.dart';
 import 'package:carros/pages/login/usuario.dart';
 import 'package:carros/utils/alert.dart';
@@ -139,7 +140,13 @@ class _LoginPageState extends State<LoginPage> {
     _bloc.dispose();
   }
 
-  void _onClickAuthGoogle() {
+  void _onClickAuthGoogle() async {
     print("Click auth google");
+    ApiResponse response = await FirebaseService().loginGoogle();
+    if(response.ok) {
+      push(context, HomePage(), replace: true);
+    } else {
+      alert(context, "Problema ao fazer login Google.");
+    }
   }
 }

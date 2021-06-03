@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carros/pages/login/firebase/firebase_service.dart';
 import 'package:carros/pages/login/login_page.dart';
 import 'package:carros/pages/login/usuario.dart';
 import 'package:carros/utils/nav.dart';
@@ -7,8 +8,8 @@ import 'package:flutter/material.dart';
 class DrawerList extends StatelessWidget {
   UserAccountsDrawerHeader _header(Usuario usuario) {
     return UserAccountsDrawerHeader(
-      accountName: Text(usuario.nome),
-      accountEmail: Text(usuario.email),
+      accountName: Text(usuario.nome ?? ""),
+      accountEmail: Text(usuario.email ?? ""),
       currentAccountPicture: Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
@@ -72,6 +73,7 @@ class DrawerList extends StatelessWidget {
 
   _onClickLogout(BuildContext context) {
     Usuario.clear();
+    FirebaseService().logout();
     Navigator.pop(context);
     push(context, LoginPage(), replace: true);
   }
